@@ -1,3 +1,5 @@
 # Employee
-System for managing employee's details. CRUD Database commands. Interactable over JAX-RS. Consumers can use different types of authentication for the API
-
+System for managing a company's employee's details. 
+- CRUD Database commands using Hibernate 
+- API's built using JAX-RA (Jersey). 
+- API's require either Basic or HMAC256 Authentication.
