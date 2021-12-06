@@ -1,30 +1,12 @@
 package com.employee.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name = "users")
-@NamedQueries({
-@NamedQuery(name="Users.getUsernameById", query="select u.username from Users u where u.user_id = :user_id")
-})
 public class Users {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_id")
 	private String user_id;
-	@Column(name = "username")
 	private String username;
-	@Column(name = "password")
 	private String password;
 	
 	

@@ -24,19 +24,18 @@ public abstract class AuthenticationType {
 			authorization = encoded[1];
 		}
 		
-		//More if statements for other types of authentication (HMAC etc)
-		/*if () {
-			
-		}*/
+		//Can check for other auth type headers here if needed
 			
 		return authorization;
 	}
 	
 	
 	
-	public abstract void authenticate (HttpHeaders httpHeaders, Employee employee);
-		
+	public abstract void authenticate (HttpHeaders httpHeaders, String requestBody);
+	//public abstract void authenticateBasic (HttpHeaders httpHeaders);	
 	
 	
-	public abstract String employeeRequest (Employee employee);
+	//public abstract String employeeRequest (Employee employee);
+	public abstract String generateAuthHeader (String requestBody);
+	public abstract String getAuthHeaderFromRequest(HttpHeaders httpHeaders);
 }

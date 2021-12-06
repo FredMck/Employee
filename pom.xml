@@ -7,7 +7,43 @@
   <version>0.0.2-SNAPSHOT</version>
   <name>Employee Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+      <properties>
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <maven.compiler.source>1.8</maven.compiler.source>
+	    <maven.compiler.target>1.8</maven.compiler.target>
+	    <!-- junit-platform.version>5.3.1</junit-platform.version>
+	    <jersey2.version>2.19</jersey2.version>
+	    <jaxrs.version>2.0.1</jaxrs.version-->
+  </properties>
+  
   <dependencies>
+  
+  
+<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- core library -->
+
+
+<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs -->
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jaxrs</artifactId>
+    <version>3.15.2.Final</version>
+    <scope>provided</scope>
+</dependency>
+
+  <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.12.0</version>
+</dependency>
+  
   
 		<dependency>
 			  <groupId>junit</groupId>
@@ -16,76 +52,34 @@
 			  <scope>test</scope>
 		</dependency>
 		   
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>1.8</version>
-		</dependency>
+
 		
 		<dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-json</artifactId>
-		    <version>1.8</version>
-		</dependency>
-		<!-- dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-json</artifactId>
-		    <version>1.9.1</version>
-		</dependency-->
-				
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.19</version>
-		</dependency>
-		<!-- dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-server</artifactId>
-		    <version>1.9</version>
-		</dependency-->
-		
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-servlet</artifactId>
-			<version>1.19</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>6.0.44</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-core</artifactId>
-		    <version>1.19</version>
-		</dependency>
-		<!-- dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-core</artifactId>
-		    <version>1.9.1</version>
-		</dependency-->
-		
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-core</artifactId>
-		    <version>4.3.10.Final</version>
-		</dependency>
+		       <groupId>org.hibernate</groupId>
+		       <artifactId>hibernate-core</artifactId>
+		       <version>5.4.30.Final</version>
+		   </dependency>
 		 
 		 <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		    <version>4.3.10.Final</version>
+		   <groupId>org.hibernate</groupId>
+		   <artifactId>hibernate-entitymanager</artifactId>
+		   <version>5.4.30.Final</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>5.1.6</version>
+		    <version>8.0.13</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>javax</groupId>
+		    <artifactId>javaee-api</artifactId>
+		    <version>8.0</version>
+		    <scope>provided</scope>
+	</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-io -->
 		<dependency>
@@ -104,9 +98,9 @@
 				
 		
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.1.2</version>
+		   <groupId>com.fasterxml.jackson.core</groupId>
+		   <artifactId>jackson-databind</artifactId>
+		   <version>2.12.2</version>
 		</dependency>
 		
 		
@@ -115,32 +109,40 @@
 		<artifactId>log4j</artifactId>
 		<version>1.2.17</version>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-collections4</artifactId>
+    <version>4.4</version>
+</dependency>
+	
 		
     
   </dependencies>
-  <build>
-  <plugins>
-	  <plugin>
-		    <groupId>org.apache.maven.plugins</groupId>
-		    <artifactId>maven-compiler-plugin</artifactId>
-		    <version>3.2</version> <!-- or whatever current version -->
-		    <configuration>
-		      <source>1.8</source>
-		      <target>1.8</target>
-		    </configuration>
-	  </plugin>
-  
+
+
+<build>
+  <finalName>Employee</finalName>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+      		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-            <fork>true</fork>
-            <executable>D:\Development\Java\jdk1.8.0_151\bin\javac.exe</executable>
-        </configuration>
-    </plugin>
-  
-  
-</plugins>
-    <finalName>Employee</finalName>
+    <artifactId>maven-war-plugin</artifactId>
+    <version>2.4</version>
+    <configuration>
+        <failOnMissingWebXml>false</failOnMissingWebXml>    
+        <warName>Employee</warName>
+    </configuration>
+</plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

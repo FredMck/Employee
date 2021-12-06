@@ -1,11 +1,11 @@
 package com.employee.test;
 
-import com.employee.dao.EmployeeDao;
+import com.employee.dao.beans.RequestLoggingBean;
 
 public class TestDatabaseConnection {
 
 	public static void main(String[] args) {
-		EmployeeDao dao = new EmployeeDao();
+		RequestLoggingBean dao = new RequestLoggingBean();
 		
 	/*	dao.createEmployee();
 		System.out.println("Employee Created Succesfully through test:::::");

@@ -5,12 +5,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /*Creating EntityManager to create sessions to talk to database*/
-public class EntityManagerUtil {
+/*public class EntityManagerUtil {
     
     private static final EntityManagerFactory entityManagerFactory;
       static {
         try {
-          entityManagerFactory = Persistence.createEntityManagerFactory("PhoneListDB");
+          entityManagerFactory = Persistence.createEntityManagerFactory("office_phone_list");
           
  
         } catch (Throwable ex) {          
@@ -22,6 +22,6 @@ public class EntityManagerUtil {
         return entityManagerFactory.createEntityManager();
  
       }
-    }
+    }*/
 	    
 	

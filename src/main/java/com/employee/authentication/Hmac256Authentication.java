@@ -12,23 +12,21 @@ import javax.ws.rs.core.HttpHeaders;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.employee.pojo.Employee;
 
 public class Hmac256Authentication extends AuthenticationType {
 	
-	//private static Employee employee;
-	private byte[] requestBody;
+	private byte[] data;
 	private byte[] sharedSecret;
 	
 	@Override
-	public void authenticate(HttpHeaders httpHeaders, Employee employee) {
+	public void authenticate(HttpHeaders httpHeaders, String requestBody) {
 		
 		String requestAuthHeader = getAuthHeader(httpHeaders);
 		System.out.println("requestAuthHeader: " + requestAuthHeader);
 		
-		String selfCreatedHeader = employeeRequest(employee);
+		String selfCreatedHeader = generateAuthHeader(requestBody);
 		System.out.println("selfCreatedHeader: " + selfCreatedHeader);
 		
 		if (!(selfCreatedHeader.equals(requestAuthHeader))) {
@@ -38,38 +36,32 @@ public class Hmac256Authentication extends AuthenticationType {
 	}
 
 
-	@Override
-	public String employeeRequest(Employee employee) {
-		
-		employee.getFirstName();
-		employee.getLastName();
-		employee.getPhoneNumber();
-		System.out.println("getRequestEmployee method: " + employee.getFirstName());
-		
-    	ObjectMapper requestMapper = new ObjectMapper();
-    	ByteArrayOutputStream output = new ByteArrayOutputStream();
-    	try {
-			requestBody = requestMapper.defaultPrettyPrintingWriter().writeValueAsBytes((employee));
-			output.write(requestBody);
-			System.out.println("Outputstream print: " + output);
-			sharedSecret = "Hello".getBytes("UTF-8");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		
-		byte[] concat = output.toByteArray();
-		System.out.println("Concat: " + concat);
-		
-		byte[] hmacSHA256 = encode(sharedSecret, concat);
-		
-		String fullHmac = Base64.encodeBase64String(hmacSHA256);
-		System.out.println("Hmac From Auth Class: " + fullHmac);
-		
-		
-		return fullHmac;
+	
+	@Override
+	public String getAuthHeaderFromRequest(HttpHeaders httpHeaders) {
+		return httpHeaders.getRequestHeader("authorization").get(0);
 	}
 	
+	@Override
+	public String generateAuthHeader(String requestBody) {
+		
+		if(requestBody == null || requestBody.isEmpty()) {
+			requestBody = "";
+		}
+		try {
+			data = requestBody.getBytes("UTF-8");
+			sharedSecret = "Hello".getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new AssertionError("UTF-8 is not supported");
+		}
+		
+		byte[] hmacSHA256 = encode(sharedSecret, data);
+		
+		String fullHmac = Base64.encodeBase64String(hmacSHA256);
+		return fullHmac;
+		
+	}
 	
 	public static byte[] encode(byte[] key, byte[] data) {
 	    try {
@@ -89,6 +81,19 @@ public class Hmac256Authentication extends AuthenticationType {
 	    return null;
 	}
 	
+	
+	
+/*	@Override
+	public String employeeRequest(Employee employee) {
+		
+		return "";
+	}*/
+
+
+
+
+
+
 }
 	
 

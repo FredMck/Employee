@@ -1,6 +1,6 @@
 package com.employee.pojo;
 
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"firstname", "username"})
 public class EmployeeAndUserResponse {
