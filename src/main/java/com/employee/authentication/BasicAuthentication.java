@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.employee.entity.TblUsers;
 import com.employee.pojo.Employee;
@@ -27,11 +28,11 @@ public class BasicAuthentication extends AuthenticationType {
 	}
 	
 	@Override
-	public void authenticate(HttpHeaders httpHeaders, String requestBody) {
+	public Response authenticate(HttpHeaders httpHeaders, String requestBody) {
 		
 		/*Getting list of users from database*/
 		
-		
+		Response response;
 		String requestBasicHeader = getAuthHeader(httpHeaders);
 		
 		//List<TblUsers> usersList = credentialsDao.getAllCredentials();
@@ -54,8 +55,13 @@ public class BasicAuthentication extends AuthenticationType {
 		}
 		
 		if (!(authList.contains(requestBasicHeader))) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
 			throw new IllegalArgumentException("Wrong credentials provided");
-		}	
+			
+		} else {
+			response = Response.status(Response.Status.OK).build();
+		}
+		return response;
 	}
 
 	

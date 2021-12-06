@@ -4,6 +4,7 @@ D:\Development\Applications\workspace\Employee\src\main\java\com\employee\entity
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\pojo\EmployeeErrorResponse.java
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\test\TestDatabaseConnection.java
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\pojo\Users.java
+D:\Development\Applications\workspace\Employee\src\main\java\com\employee\authentication\ResponseEnum.java
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\beans\ValidationBean.java
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\dao\beans\RequestLoggingBean.java
 D:\Development\Applications\workspace\Employee\src\main\java\com\employee\pojo\Employee.java

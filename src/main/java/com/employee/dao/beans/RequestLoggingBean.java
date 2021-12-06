@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 //import org.hibernate.Query;
 
 import com.employee.entity.TblEmployee;
+import com.employee.entity.TblEmployee.TblEmployeeBuilder;
 import com.employee.entity.TblExtraEmployeeInfo;
 import com.employee.entity.TblUsers;
 import com.employee.pojo.Employee;
@@ -46,11 +47,12 @@ public class RequestLoggingBean {
 		
 		System.out.println("Firstname = " + employee.getFirstName());
 		
-		TblEmployee tblEmployee = new TblEmployee();
-		tblEmployee.setFirstName(employee.getFirstName());
-		tblEmployee.setLastName(employee.getLastName());
-		tblEmployee.setPhoneNumber(employee.getPhoneNumber());
-
+		
+		
+		TblEmployee tblEmployee = TblEmployee.builder().withFirstName(employee.getFirstName())
+														.withLastName(employee.getLastName())
+														.withPhoneNumber(employee.getPhoneNumber()).build();
+		
 		
 		em.persist(tblEmployee);
 		
@@ -243,20 +245,24 @@ public class RequestLoggingBean {
 
 	
 	// Updates an Employee from database
+	
 	public void updateEmployee (int id, Employee employeeDetails) {
 		
-		/*Incoming details from request*/
-		String firstName = employeeDetails.getFirstName();
-		String lastName = employeeDetails.getLastName();
-		String phoneNumber = employeeDetails.getPhoneNumber();
 		
 		/*Persisting data into table*/
-		TblEmployee employeeTable = em.find(TblEmployee.class, id);
+		/*TblEmployee employeeTable = em.find(TblEmployee.class, id);
+		
+		
 		employeeTable.setFirstName(firstName);
 		employeeTable.setLastName(lastName);
-		employeeTable.setPhoneNumber(phoneNumber);
+		employeeTable.setPhoneNumber(phoneNumber);*/
+		
+		
+		TblEmployee tblEmployee = TblEmployee.builder().withFirstName(employeeDetails.getFirstName())
+														.withLastName(employeeDetails.getLastName())
+														.withPhoneNumber(employeeDetails.getPhoneNumber()).build();
 
-		em.persist(employeeTable);
+		em.persist(tblEmployee);
 	}
 	
 	

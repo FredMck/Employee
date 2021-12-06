@@ -1,6 +1,8 @@
 com\employee\exceptions\JsonMappingException.class
 com\employee\authentication\Hmac256Authentication.class
+com\employee\entity\TblEmployee$1.class
 com\employee\service\EmployeeService.class
+com\employee\entity\TblEmployee$TblEmployeeBuilder.class
 com\userlogin\dao\CredentialsDao.class
 com\employee\authentication\AuthenticationType.class
 com\employee\entity\TblEmployee.class
@@ -12,6 +14,7 @@ com\employee\pojo\Employee.class
 com\employee\pojo\EmployeeResponse.class
 com\employee\beans\ValidationBean.class
 com\employee\pojo\EmployeeResponseWithId.class
+com\employee\authentication\ResponseEnum.class
 com\employee\pojo\FirstnameDetails.class
 com\employee\pojo\ExtraEmployeeInfo.class
 com\employee\pojo\EmployeeAndUserResponse.class

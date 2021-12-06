@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -23,14 +24,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.employee.authentication.AuthEnum;
 import com.employee.authentication.AuthenticationType;
 import com.employee.authentication.BasicAuthentication;
 import com.employee.authentication.Hmac256Authentication;
+import com.employee.authentication.ResponseEnum;
 import com.employee.beans.ValidationBean;
 import com.employee.dao.beans.RequestLoggingBean;
 import com.employee.entity.TblEmployee;
@@ -97,7 +98,10 @@ public class EmployeeService{
 	public Response getAllEmployees () {
 		logger.info("----Getting all employee's from database----");
 		
-		authType(AuthEnum.BASIC, httpHeaders, "");
+		
+		Response response = authType(AuthEnum.BASIC, httpHeaders, "");
+		
+		
 		List<TblEmployee> employeeList = requestLoggingBean.readAllEmployees();
 		return Response.status(Response.Status.OK).entity(employeeList).build();
 		
@@ -258,16 +262,21 @@ public class EmployeeService{
 	}
 	
 	
-	private void authType (AuthEnum authType, HttpHeaders httpHeaders, String requestBody) {
+	private Response authType (AuthEnum authType, HttpHeaders httpHeaders, String requestBody) {
+		
+		Response response = null;
 		if (authType == AuthEnum.SHA256) {
 			AuthenticationType authSha256 = new Hmac256Authentication();
-			authSha256.authenticate(httpHeaders, requestBody);
+			response = authSha256.authenticate(httpHeaders, requestBody);
+			
 		}
 		
 		if (authType == AuthEnum.BASIC) {
 			AuthenticationType authBasic = new BasicAuthentication(credentialsDao.getAllCredentials());
-			authBasic.authenticate(httpHeaders, requestBody);
+			response = authBasic.authenticate(httpHeaders, requestBody);
+			
 		}
+		return response;
 	}
 	
 	

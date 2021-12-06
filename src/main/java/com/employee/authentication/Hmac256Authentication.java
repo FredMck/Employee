@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -21,8 +22,8 @@ public class Hmac256Authentication extends AuthenticationType {
 	private byte[] sharedSecret;
 	
 	@Override
-	public void authenticate(HttpHeaders httpHeaders, String requestBody) {
-		
+	public Response authenticate(HttpHeaders httpHeaders, String requestBody) {
+		Response response = null;
 		String requestAuthHeader = getAuthHeader(httpHeaders);
 		System.out.println("requestAuthHeader: " + requestAuthHeader);
 		
@@ -30,8 +31,13 @@ public class Hmac256Authentication extends AuthenticationType {
 		System.out.println("selfCreatedHeader: " + selfCreatedHeader);
 		
 		if (!(selfCreatedHeader.equals(requestAuthHeader))) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
 			throw new IllegalArgumentException("HMAC's do not match. Possible Message Tampering");
+		} else {
+			response = Response.status(Response.Status.OK).build();
 		}
+		
+		return response;
 		
 	}
 

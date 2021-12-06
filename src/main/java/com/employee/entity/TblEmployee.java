@@ -35,35 +35,62 @@ public class TblEmployee implements Serializable{
 	private String phoneNumber;
 	
 	
+	
+	private TblEmployee(String firstName, String lastName, String phoneNumber) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
 	
 	public String getLastName() {
 		return lastName;
 	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
 	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+
+    public static TblEmployeeBuilder builder() {
+        return new TblEmployeeBuilder();
+    }
+
+	
+	public static class TblEmployeeBuilder {
+		//private final int id;
+		private String firstName;
+		private String lastName;
+		private String phoneNumber;
+		
+		
+		public TblEmployeeBuilder withFirstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+		
+		public TblEmployeeBuilder withLastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+		
+		public TblEmployeeBuilder withPhoneNumber(String phoneNumber) {
+			this.phoneNumber = phoneNumber;
+			return this;
+		}
+		
+		public TblEmployee build () {
+			return new TblEmployee(firstName, lastName, phoneNumber);
+		}
 	}
+	
+	
 }
 	

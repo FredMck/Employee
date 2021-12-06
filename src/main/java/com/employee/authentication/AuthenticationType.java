@@ -2,6 +2,7 @@ package com.employee.authentication;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 
 import com.employee.pojo.Employee;
 
@@ -31,7 +32,7 @@ public abstract class AuthenticationType {
 	
 	
 	
-	public abstract void authenticate (HttpHeaders httpHeaders, String requestBody);
+	public abstract Response authenticate (HttpHeaders httpHeaders, String requestBody);
 	//public abstract void authenticateBasic (HttpHeaders httpHeaders);	
 	
 	
