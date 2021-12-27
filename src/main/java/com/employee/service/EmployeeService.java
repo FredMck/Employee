@@ -77,7 +77,7 @@ public class EmployeeService{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/addemployee") /*Adding via webservice URL http://localhost:8443/Employee/rest/employees/addemployee*/
-	public Response addEmployee (String requestBody) throws Exception {
+	public Response addEmployee (String requestBody) {
 		logger.info("----Adding new employee via web service----\n");
 		logger.info("Request body: " + requestBody);
 		
@@ -88,7 +88,7 @@ public class EmployeeService{
 		authType(AuthEnum.SHA256, httpHeaders, requestBody);
 		requestLoggingBean.logRequestToDatabase(employee);
 		
-		Response response = Validation(validatonBean, employee);
+		Response response = validation(validatonBean, employee);
 		return response;
 	}
 	
@@ -98,12 +98,19 @@ public class EmployeeService{
 	public Response getAllEmployees () {
 		logger.info("----Getting all employee's from database----");
 		
-		
-		Response response = authType(AuthEnum.BASIC, httpHeaders, "");
-		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
 		
 		List<TblEmployee> employeeList = requestLoggingBean.readAllEmployees();
-		return Response.status(Response.Status.OK).entity(employeeList).build();
+		response = Response.status(Response.Status.OK).entity(employeeList).build();
+		return response;
 		
 	}
 	
@@ -114,6 +121,16 @@ public class EmployeeService{
 	@Path("/getallemployeeswithfirstname/{firstName}") // http://localhost:8080/Employee/rest/employees/getcustomemployee/Fred
 	public Response getAllEmployeesWithFirstName (@PathParam("firstName") String empFirstname) { 
 		logger.info("----Retreiving Information about Specific Employee's");
+		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
 		
 		List<TblEmployee> employeeList = requestLoggingBean.readAllEmployeesWithFirstName(empFirstname);
 		return Response.status(Response.Status.OK).entity(employeeList).build();
@@ -128,6 +145,16 @@ public class EmployeeService{
 	public Response removeEmployee (@PathParam("id") int idPassedByService) {
 		logger.info("----Deleting employee with id: " + idPassedByService + " from database----");
 		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
+		
 		requestLoggingBean.deleteEmployeeById(idPassedByService);
 		return Response.status(Response.Status.OK).build();
 	}
@@ -138,13 +165,12 @@ public class EmployeeService{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/editEmployee/{id}") //http://localhost:8080/Employee/rest/employees/editEmployee/20
-	//TODO Remove throws
-	public Response editEmployee (@PathParam("id") int idPassedByService, String requestBody) throws IOException {
+	public Response editEmployee (@PathParam("id") int idPassedByService, String requestBody) {
 		logger.info("----Updating employee from database----");
 		
 		Employee employee = deserializeMapper(requestBody);
 		requestLoggingBean.updateEmployee(idPassedByService, employee);
-		Response response = Validation(validatonBean, employee);
+		Response response = validation(validatonBean, employee);
 		
 		return response;
 		
@@ -156,9 +182,17 @@ public class EmployeeService{
 	@Path("/firstname/{id}")
 	public Response getFirstnameById (@PathParam("id") Integer id) {
 		
-		//RequestLoggingBean requestLoggingBean = new RequestLoggingBean();
-		String employee = requestLoggingBean.getFirstnameByIdDao(id);
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
 		
+		String employee = requestLoggingBean.getFirstnameByIdDao(id);
 		return Response.status(Response.Status.OK).entity(employee).build();
 	}
 	
@@ -171,8 +205,18 @@ public class EmployeeService{
 	@Path("/multipletables/employeeid/{employeeid}/userid/{userid}")
 	public Response getFirstNameAndUserByIdUsing2DBTables (@PathParam("employeeid") Integer employeeId, @PathParam("userid") String userId) {
 		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
+		
 		EmployeeAndUserResponse employeeAndUserResponse = requestLoggingBean.getFirstnameAndUserById(employeeId, userId);
-		Response response = successfulResponseEmployeeAndUser(employeeAndUserResponse);
+		response = successfulResponseEmployeeAndUser(employeeAndUserResponse);
 		
 		return response;
 	}
@@ -183,8 +227,18 @@ public class EmployeeService{
 	@Path("/object/employeeid/{employeeid}/userid/{userid}")
 	public Response getFirstNameAndUserByIdWithObject (@PathParam("employeeid") Integer employeeId, @PathParam("userid") String userId) {
 		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
+		
 		FirstnameDetails FirstnameDetailsResponse = requestLoggingBean.getFirstnameAndUserByIdWithObjectName(employeeId, userId);
-		Response response = successfulFirstnameDetailsResponse(FirstnameDetailsResponse);
+		response = successfulFirstnameDetailsResponse(FirstnameDetailsResponse);
 		
 		
 		return response;
@@ -196,8 +250,18 @@ public class EmployeeService{
 	@Path("/filtered")
 	public Response testingQueryParams (@QueryParam("start") int startId) { 
 		
-		List<TblEmployee> response = requestLoggingBean.GreaterThanListOfEmployeeById(startId);
-		return Response.status(Response.Status.OK).entity(response).build();
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
+		
+		List<TblEmployee> responseList = requestLoggingBean.GreaterThanListOfEmployeeById(startId);
+		return Response.status(Response.Status.OK).entity(responseList).build();
 		
 	}
 	
@@ -207,8 +271,18 @@ public class EmployeeService{
 	@Path("/filteredwithid")
 	public Response testingQueryParamsWithIdInResponse (@QueryParam("start") int startId) { 
 		
+		Response response = null;
+		/*Checking Basic Auth Credentials. If no match, return 401*/
+		try {
+			authType(AuthEnum.BASIC, httpHeaders, "");
+		} catch (IllegalArgumentException e) {
+			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info(e);
+			return response;
+		}
+		
 		List<TblEmployee> employeeList = requestLoggingBean.GreaterThanListOfEmployeeByIdWithId(startId);
-		Response response = successfulResponseWithId(employeeList);
+		response = successfulResponseWithId(employeeList);
 		
 
 		return response;
@@ -220,10 +294,7 @@ public class EmployeeService{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/createuser")
-	public Response addUser (String requestBody) throws IOException {
-		
-		//basic = new BasicAuthentication();
-		//basic.authenticate(httpHeaders, employee);
+	public Response addUser (String requestBody) {
 		
 		Users user = deserializeMapperUsers(requestBody);
 		requestLoggingBean.createUser(user);
@@ -237,20 +308,23 @@ public class EmployeeService{
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Path("/headers")
 	public String getHeaders (@Context HttpHeaders httpHeaders) {
+		
 			
-	      MultivaluedMap<String, String> rh = httpHeaders.getRequestHeaders();
-	      String str = rh.entrySet()
+		MultivaluedMap<String, String> rh = httpHeaders.getRequestHeaders();
+	    String str = rh.entrySet()
 	                     .stream()
 	                     .map(e -> e.getKey() + " = " + e.getValue()) //e = entry in the map. for every entry get the key and the value.
 	                     .collect(Collectors.joining("\n"));
-	      return str;
+	    return str;
 	  
 	}
 	
 	
+	/*---------------------------------------------------------------------------------------------------------------------------------*/
 	
+
 	
-	private Response Validation (ValidationBean validationBean, Employee employee) {
+	private Response validation (ValidationBean validationBean, Employee employee) {
 		
 		Boolean checkinMandatoryFields = validationBean.validateIncomingData(employee);
 		if (checkinMandatoryFields) {
@@ -334,8 +408,7 @@ public class EmployeeService{
 	}
 	
 	
-	//TODO Remove throws and fix
-	private Employee deserializeMapper(String requestBody) throws IOException {
+	private Employee deserializeMapper(String requestBody) {
 		ObjectMapper mapper = new ObjectMapper();
 		Employee employee;
 		try {
@@ -349,7 +422,7 @@ public class EmployeeService{
 		return employee;
 	}
 	
-	private Users deserializeMapperUsers(String requestBody) throws IOException {
+	private Users deserializeMapperUsers(String requestBody) {
 		ObjectMapper mapper = new ObjectMapper();
 		Users users;
 		try {
@@ -435,7 +508,6 @@ public class EmployeeService{
 		return messageId;
 	}
 	
-	/*Unused*/
 	private static String getAuthHeaderServ(HttpServletRequest request) {
 		logger.info("enters getAuthHeaderServ");
 		String auth = request.getHeader	("Authorization").toLowerCase();
@@ -444,8 +516,6 @@ public class EmployeeService{
 		return auth;
 	}
 	
-	//Get all request headers
-	//http://localhost:8080/Employee/rest/employees/headers
 
 	
 

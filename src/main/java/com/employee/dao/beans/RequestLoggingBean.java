@@ -248,16 +248,6 @@ public class RequestLoggingBean {
 	
 	public void updateEmployee (int id, Employee employeeDetails) {
 		
-		
-		/*Persisting data into table*/
-		/*TblEmployee employeeTable = em.find(TblEmployee.class, id);
-		
-		
-		employeeTable.setFirstName(firstName);
-		employeeTable.setLastName(lastName);
-		employeeTable.setPhoneNumber(phoneNumber);*/
-		
-		
 		TblEmployee tblEmployee = TblEmployee.builder().withFirstName(employeeDetails.getFirstName())
 														.withLastName(employeeDetails.getLastName())
 														.withPhoneNumber(employeeDetails.getPhoneNumber()).build();

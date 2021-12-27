@@ -43,6 +43,10 @@ public class TblEmployee implements Serializable{
 		
 	}
 	
+	private TblEmployee() {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}

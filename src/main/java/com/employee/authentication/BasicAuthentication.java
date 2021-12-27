@@ -9,13 +9,16 @@ import javax.ejb.EJB;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.employee.entity.TblUsers;
+import com.employee.logger.EmployeeLogger;
 import com.employee.pojo.Employee;
 import com.employee.pojo.Users;
 import com.userlogin.dao.CredentialsDao;
 
 public class BasicAuthentication extends AuthenticationType {
-	
+	static Logger logger = Logger.getLogger(EmployeeLogger.class);
 	private static String username;
 	private static String password;
 	private static String databaseEncodedAuth;
@@ -56,6 +59,7 @@ public class BasicAuthentication extends AuthenticationType {
 		
 		if (!(authList.contains(requestBasicHeader))) {
 			response = Response.status(Response.Status.UNAUTHORIZED).build();
+			logger.info("Enters unauth");
 			throw new IllegalArgumentException("Wrong credentials provided");
 			
 		} else {
